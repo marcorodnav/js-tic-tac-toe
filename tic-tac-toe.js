@@ -29,6 +29,7 @@ const startGame = () => {
     cell.innerText = ""
     originalGrid = Array.from(Array(9).keys())
     cell.addEventListener('click', playerTurn, false)
+    cell.classList.remove('wincombo')
   })
 }
 startGame()
@@ -38,12 +39,12 @@ resetButton.addEventListener('click',startGame,false)
 
 const checkWin = (board, symbol) => {
   let cellsPlayed = board.reduce((acc, elem, index) => (elem === symbol) ? acc.concat(index) : acc, [])
-  let gameWon;
-  for(let [index, winComb] in winingCombinations.entries()) {
-    if (winComb.every((element) => cellsPlayed.indexOf(element) > -1)) {
+  let gameWon = null
+  for (let winComb of winingCombinations.entries()) {
+    if(winComb[1].every((elem) => cellsPlayed.indexOf(elem) > -1)) {
       gameWon = {
-        index: index,
-        winner: symbol
+        index: winComb[0],
+        symbol: symbol
       }
       break
     }
@@ -54,6 +55,11 @@ const checkWin = (board, symbol) => {
 const turn = (cellId, symbol) => {
   originalGrid[cellId] = symbol
   document.getElementById(cellId).innerText = symbol
-  // let gameWon = checkWin(originalGrid, symbol)
-  console.info(originalGrid)
+  let gameWon = checkWin(originalGrid, symbol)
+  if (gameWon) {
+    let winingComb = winingCombinations[gameWon.index];
+    winingComb.forEach((cellId) => {
+      document.getElementById(cellId).classList.add('wincombo')
+    })
+  }
 }
