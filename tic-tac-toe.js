@@ -16,13 +16,13 @@ const grid = document.querySelectorAll('.cell')
 
 const startGame = () => {
   grid.forEach((cell) => {
-    cell.addEventListener('click', turnPlayer, false)
+    cell.addEventListener('click', playerTurn, false)
   })
 }
 
 const resetButton = document.querySelector('#startButton');
 resetButton.addEventListener('click',startGame,false)
-const turnPlayer = (cell) => {
+const playerTurn = (cell) => {
   cell.target.innerText = humanSymbol
 }
 
