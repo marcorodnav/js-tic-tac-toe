@@ -11,31 +11,30 @@ const winingCombinations = [
   [1,4,7],
   [2,5,8]
 ]
+const playerTurn = (cell) => {
+  if (typeof originalGrid[cell.target.id] == 'number') {
+    turn(cell.target.id, humanSymbol);
+    if (!checkTie()) {
+      turn(findEmptySquare(originalGrid), computerSymbol)
+    }
+  }
+}
 
 const grid = document.querySelectorAll('.cell')
 
+
 const checkTie = () => {
   let cellsAvailables = originalGrid
-                              .filter((element) => !isNaN(element))
-                              .reduce((total, element) => total+element, 0)
-  if (cellsAvailables === 0) console.info("TIE!")
+                            .filter((element) => !isNaN(element))
+                            .reduce((total, element) => total+element, 0)
+  if(cellsAvailables === 0) {
+    showWinner("Tie...")
+    return true
+  }
+  return false
 }
 
-const playerTurn = (cell) => {
-  turn(cell.target.id, humanSymbol)
-}
-const startGame = () => {
-  grid.forEach((cell) => {
-    cell.innerText = ""
-    originalGrid = Array.from(Array(9).keys())
-    cell.addEventListener('click', playerTurn, false)
-    cell.classList.remove('wincombo')
-  })
-}
-startGame()
 
-const resetButton = document.querySelector('#startButton')
-resetButton.addEventListener('click',startGame,false)
 
 const checkWin = (board, symbol) => {
   let cellsPlayed = board.reduce((acc, elem, index) => (elem === symbol) ? acc.concat(index) : acc, [])
@@ -56,10 +55,40 @@ const turn = (cellId, symbol) => {
   originalGrid[cellId] = symbol
   document.getElementById(cellId).innerText = symbol
   let gameWon = checkWin(originalGrid, symbol)
-  if (gameWon) {
-    let winingComb = winingCombinations[gameWon.index];
-    winingComb.forEach((cellId) => {
-      document.getElementById(cellId).classList.add('wincombo')
-    })
-  }
+  if (gameWon) gameOver(gameWon)
 }
+
+// temp control for computer
+const findEmptySquare = (board) => {
+  return board.indexOf(board.find(x => !isNaN(x)))
+}
+
+const gameOver = (gameWon) => {
+  let winingComb = winingCombinations[gameWon.index];
+  winingComb.forEach((cellId) => {
+    document.getElementById(cellId).classList.add('wincombo')
+  })
+  grid.forEach((cell) => {
+    cell.removeEventListener('click', playerTurn, false)
+  })
+  showWinner(gameWon.symbol === 'X' ? "You win!" : "You lose")
+}
+
+const showWinner = (winner) => {
+  document.getElementById('gameFinished').style.display = "block"
+  document.getElementById('text').innerText = winner
+}
+
+const startGame = () => {
+  document.getElementById('gameFinished').style.display = "none"
+  grid.forEach((cell) => {
+    cell.innerText = ""
+    originalGrid = Array.from(Array(9).keys())
+    cell.addEventListener('click', playerTurn, false)
+    cell.classList.remove('wincombo')
+  })
+}
+const resetButton = document.querySelector('#startButton')
+resetButton.addEventListener('click',startGame,false)
+
+startGame()
