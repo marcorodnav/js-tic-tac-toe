@@ -42,7 +42,8 @@ body {
 #startButton {
   position: relative;
   display: block;
-  margin: 40px 100px;
+  margin-top: 50px;
+  margin-left: 130px;
   padding: 10px 30px;
   border-radius: 10px;
   font-family: monospace;
@@ -57,4 +58,28 @@ body {
   background-color: rgba(0, 122, 179, 0.75);
   color: #fff;
   cursor: pointer;
+}
+
+#gameFinished {
+  height: 280px;
+  width: 400px;
+  position:fixed;
+  display: block;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  background-color: rgba(255, 255, 255, 0.473);
+  border-radius: 10px;
+  margin-left:-210px;
+  margin-top:-200px
+}
+
+#text {
+  color: #006db3;
+  font-size: 60px;
+  position: relative;
+  margin: 60px auto;
+  width: 100%;
+  display: block;
+  text-align: center;
 }
