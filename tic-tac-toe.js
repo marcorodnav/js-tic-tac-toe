@@ -1,5 +1,5 @@
-const humanSymbol = "X"
-const computerSymbol = "O"
+var humanSymbol
+var computerSymbol
 let originalGrid = Array.from(Array(9).keys())
 const winingCombinations = [
   [0,1,2],
@@ -77,7 +77,7 @@ const gameOver = (gameWon) => {
   grid.forEach((cell) => {
     cell.removeEventListener('click', playerTurn, false)
   })
-  showWinner(gameWon.symbol === 'X' ? "You win!" : "You lose")
+  showWinner(gameWon.symbol === humanSymbol ? "You win!" : "You lose")
 }
 
 const showWinner = (winner) => {
@@ -85,7 +85,19 @@ const showWinner = (winner) => {
   document.getElementById('text').innerText = winner
 }
 
+const getCheckedRadioByName = (name) => {
+  return  Array.prototype.slice.call(document.getElementsByName(name)).filter(function(e){
+      return e.checked;
+  });
+}
+
+const setPlayerSymbol = () => {
+  humanSymbol = getCheckedRadioByName('playerSymbol')[0].value
+  computerSymbol = humanSymbol === 'X' ? 'O' : 'X'
+}
+
 const startGame = () => {
+  setPlayerSymbol()
   document.getElementById('gameFinished').style.display = "none"
   grid.forEach((cell) => {
     cell.innerText = ""
@@ -94,7 +106,22 @@ const startGame = () => {
     cell.classList.remove('wincombo')
   })
 }
+const checkX = () => {
+  symbolX.checked = true
+  symbolO.checked = false
+  startGame()
+}
+const checkO = () => {
+  symbolO.checked = true
+  symbolX.checked = false
+  startGame()
+}
 const resetButton = document.querySelector('#startButton')
-resetButton.addEventListener('click',startGame,false)
+const symbolX = document.getElementById('X')
+symbolX.addEventListener('click', checkX, false)
+const symbolO = document.getElementById('O')
+symbolO.addEventListener('click', checkO, false)
 
+
+resetButton.addEventListener('click',startGame,false)
 startGame()

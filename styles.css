@@ -83,3 +83,18 @@ body {
   display: block;
   text-align: center;
 }
+
+.symbolSelection {
+  position: absolute;
+  top:0;
+  left: 0;
+  color: #fff;
+  font-size: 24px;
+}
+
+.symbolSelection input {
+  display: inline-block;
+  font-size: 40px;
+  position: relative;
+  margin-left: 10px;
+}
