@@ -13,7 +13,7 @@ const winingCombinations = [
 ]
 const playerTurn = (cell) => {
   if (typeof originalGrid[cell.target.id] == 'number') {
-    turn(cell.target.id, humanSymbol);
+    turn(cell.target.id, humanSymbol)
     if (!checkTie()) {
       turn(findEmptySquare(originalGrid), computerSymbol)
     }
@@ -58,13 +58,19 @@ const turn = (cellId, symbol) => {
   if (gameWon) gameOver(gameWon)
 }
 
+const randomNum = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // temp control for computer
 const findEmptySquare = (board) => {
-  return board.indexOf(board.find(x => !isNaN(x)))
+  let emptySquares = board.filter((cell) => !isNaN(cell))
+  let id = randomNum(0, emptySquares.length-1)
+  return emptySquares[id]
 }
 
 const gameOver = (gameWon) => {
-  let winingComb = winingCombinations[gameWon.index];
+  let winingComb = winingCombinations[gameWon.index]
   winingComb.forEach((cellId) => {
     document.getElementById(cellId).classList.add('wincombo')
   })
